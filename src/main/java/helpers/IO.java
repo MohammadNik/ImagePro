@@ -11,7 +11,7 @@ public class IO {
      * @param address image address
      * @return Buffered Type of image file
      */
-    public static BufferedImage readImg(String address) {
+    public static Image readImg(String address) {
         File file = new File(address);
         if (!file.exists()) throw new IllegalArgumentException("No Image Found");
 
@@ -23,11 +23,12 @@ public class IO {
             e.printStackTrace();
         }
 
-        return img;
+        return new Image(img);
     }
 
-    public static BufferedImage createImg(int width , int height) {
-        return new BufferedImage(width , height , BufferedImage.TYPE_INT_ARGB);
+    public static Image createImg(int width , int height) {
+        BufferedImage bufferedImage = new BufferedImage(width , height , BufferedImage.TYPE_INT_ARGB);
+        return new Image(bufferedImage);
     }
 
     /**
@@ -35,9 +36,9 @@ public class IO {
      * @param format format of image e.g. jpg - png - ..
      * @param address address of where image is going to saved
      */
-    public static void writeImg(BufferedImage image , String format, String address) {
+    public static void writeImg(Image image , String format, String address) {
         try {
-            ImageIO.write(image , format , new File(address));
+            ImageIO.write(image.getBufferedImage() , format , new File(address));
         } catch (IOException e) {
             System.err.printf("There was a problem in save Image with %s format at Address \'%s\'",format,address);
             e.printStackTrace();
